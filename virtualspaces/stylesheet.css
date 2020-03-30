@@ -3,7 +3,6 @@
 body {
   background: rgb(9, 9, 237);
 }
-
 #cursor {
   position: relative;
 }
@@ -21,7 +20,7 @@ body {
   white-space: nowrap;
   font-size: 30px;
   font-weight: 700;
-  border-right: 4px solid orange;
+  border-right: 4px solid white;
   box-sizing: border-box;
 }
 
@@ -40,6 +39,6 @@ body {
     border-color: transparent;
   }
   50% {
-    border-color: orange;
+    border-color: white;
   }
 }
