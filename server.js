@@ -6,7 +6,7 @@ var httpServer = require("http");
 const ioServer = require("socket.io");
 const RTCMultiConnectionServer = require("rtcmulticonnection-server");
 
-var PORT = 9001;
+var PORT = 8080;
 var isUseHTTPs = false;
 
 const jsonPath = {
@@ -156,13 +156,13 @@ function serverHandler(request, response) {
         filename.search(/virtualspaces/g) === -1 &&
         filename.search(/admin/g) === -1 &&
         stats.isDirectory() &&
-        config.homePage === "/virtualspaces/index.html"
+        config.homePage === "virtualspaces/index.html"
       ) {
         if (response.redirect) {
-          response.redirect("/virtualspaces/");
+          response.redirect("virtualspaces/");
         } else {
           response.writeHead(301, {
-            Location: "/virtualspaces/"
+            Location: "virtualspaces/"
           });
         }
         response.end();

@@ -1,7 +1,7 @@
 {
   "socketURL": "/",
   "dirPath": "",
-  "homePage": "/demos/index.html",
+  "homePage": "virtualspaces/index.html",
   "socketMessageEvent": "RTCMultiConnection-Message",
   "socketCustomEvent": "RTCMultiConnection-Custom-Message",
   "port": "9001",
