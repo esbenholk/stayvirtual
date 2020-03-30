@@ -90,7 +90,7 @@ function serverHandler(request, response) {
 
     var matched = false;
     [
-      "/demos/",
+      "/virtualspaces/",
       "/dev/",
       "/dist/",
       "/socket.io/",
@@ -153,16 +153,16 @@ function serverHandler(request, response) {
       stats = fs.lstatSync(filename);
 
       if (
-        filename.search(/demos/g) === -1 &&
+        filename.search(/virtualspaces/g) === -1 &&
         filename.search(/admin/g) === -1 &&
         stats.isDirectory() &&
-        config.homePage === "/demos/index.html"
+        config.homePage === "/virtualspaces/index.html"
       ) {
         if (response.redirect) {
-          response.redirect("/demos/");
+          response.redirect("/virtualspaces/");
         } else {
           response.writeHead(301, {
-            Location: "/demos/"
+            Location: "/virtualspaces/"
           });
         }
         response.end();
@@ -183,27 +183,36 @@ function serverHandler(request, response) {
           "Content-Type": "text/html"
         });
 
-        if (filename.indexOf(resolveURL("/demos/MultiRTC/")) !== -1) {
-          filename = filename.replace(resolveURL("/demos/MultiRTC/"), "");
-          filename += resolveURL("/demos/MultiRTC/index.html");
+        if (filename.indexOf(resolveURL("/virtualspaces/MultiRTC/")) !== -1) {
+          filename = filename.replace(
+            resolveURL("/virtualspaces/MultiRTC/"),
+            ""
+          );
+          filename += resolveURL("/virtualspaces/MultiRTC/index.html");
         } else if (filename.indexOf(resolveURL("/admin/")) !== -1) {
           filename = filename.replace(resolveURL("/admin/"), "");
           filename += resolveURL("/admin/index.html");
-        } else if (filename.indexOf(resolveURL("/demos/dashboard/")) !== -1) {
-          filename = filename.replace(resolveURL("/demos/dashboard/"), "");
-          filename += resolveURL("/demos/dashboard/index.html");
         } else if (
-          filename.indexOf(resolveURL("/demos/video-conference/")) !== -1
+          filename.indexOf(resolveURL("/virtualspaces/dashboard/")) !== -1
         ) {
           filename = filename.replace(
-            resolveURL("/demos/video-conference/"),
+            resolveURL("/virtualspaces/dashboard/"),
             ""
           );
-          filename += resolveURL("/demos/video-conference/index.html");
-        } else if (filename.indexOf(resolveURL("/demos")) !== -1) {
-          filename = filename.replace(resolveURL("/demos/"), "");
-          filename = filename.replace(resolveURL("/demos"), "");
-          filename += resolveURL("/demos/index.html");
+          filename += resolveURL("/virtualspaces/dashboard/index.html");
+        } else if (
+          filename.indexOf(resolveURL("/virtualspaces/video-conference/")) !==
+          -1
+        ) {
+          filename = filename.replace(
+            resolveURL("/virtualspaces/video-conference/"),
+            ""
+          );
+          filename += resolveURL("/virtualspaces/video-conference/index.html");
+        } else if (filename.indexOf(resolveURL("/virtualspaces")) !== -1) {
+          filename = filename.replace(resolveURL("/virtualspaces/"), "");
+          filename = filename.replace(resolveURL("/virtualspaces"), "");
+          filename += resolveURL("/virtualspaces/index.html");
         } else {
           filename += resolveURL(config.homePage);
         }
