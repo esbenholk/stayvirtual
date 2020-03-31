@@ -8,7 +8,7 @@
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
     />
     <link rel="shortcut icon" href="/virtualspaces/logo.png" />
-    <!-- <link rel="stylesheet" href="/demos/stylesheet.css" /> -->
+    <link rel="stylesheet" href="stylesheet.css" />
   </head>
   <body>
     <section class="make-center">
@@ -19,25 +19,42 @@
         </button>
         <br /><br />
 
-        <input
-          type="text"
-          id="room-id"
-          value="abcdef"
-          autocorrect="off"
-          autocapitalize="off"
-          size="20"
-        />
-        <button id="open-room">Open Room</button>
-        <button id="join-room">Join Room</button>
-        <button id="open-or-join-room">Auto Open Or Join Room</button>
+        <h1 id="namefield">
+          > WHATS YOUR NAME CUTIE?
+          <input
+            type="text"
+            id="name"
+            value="NAME"
+            autocorrect="off"
+            autocapitalize="off"
+            size="20"
+          />
+        </h1>
+        <h1 id="space">
+          > WHATS THE NAME OF YOUR SPACE?
+          <input
+            type="text"
+            id="room-id"
+            value="SPACE"
+            autocorrect="off"
+            autocapitalize="off"
+            size="20"
+          />
+        </h1>
+        <div class="button-pack">
+          <button id="open-room">OPEN NEW ROOM</button>
+          <button id="join-room">JOIN A FRIENDS ROOM</button>
+        </div>
+      </div>
+      <div id="virtualcity">
+        <div id="car">
+          <img id="carFont" src="carFront.png" alt="limousine" />
+          <div id="videos-container"></div>
+          <img id="carBack" src="carBack.png" alt="limousine" />
+        </div>
       </div>
 
-      <div id="videos-container" style="margin: 20px 0;"></div>
-
-      <div
-        id="room-urls"
-        style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"
-      ></div>
+      <div id="room-urls" style="display:none"></div>
     </section>
 
     <script src="/dist/RTCMultiConnection.min.js"></script>
@@ -47,14 +64,38 @@
     <!-- custom layout for HTML5 audio/video elements -->
     <link rel="stylesheet" href="/dev/getHTMLMediaElement.css" />
     <script src="/dev/getHTMLMediaElement.js"></script>
-
     <script src="/node_modules/recordrtc/RecordRTC.js"></script>
+
     <script>
       // ......................................................
       // .......................UI Code........................
       // ......................................................
+
+      let emoticons = [
+        "💦",
+        "🔥",
+        "🌈",
+        "☢",
+        "💕",
+        "🌹",
+        "🍕",
+        "💦",
+        "💥",
+        "🔥",
+        "🍀",
+        "🌸",
+        "❤️",
+        "💖",
+        "💞",
+        "💗",
+        "‍🌈",
+        "☽",
+        "⭐️",
+        "💫"
+      ];
       document.getElementById("open-room").onclick = function() {
         disableInputButtons();
+        console.log("open room connection", connection);
         connection.open(document.getElementById("room-id").value, function(
           isRoomOpened,
           roomid,
@@ -62,6 +103,21 @@
         ) {
           if (isRoomOpened === true) {
             showRoomURL(connection.sessionid);
+            var username = document.getElementById("name");
+            document.getElementById("open-room").style.display = "none";
+            document.getElementById("join-room").style.display = "none";
+            document.getElementById("namefield").innerHTML =
+              "HELLO    " +
+              username.value +
+              "      " +
+              emoticons[Math.floor(Math.random() * emoticons.length)] +
+              emoticons[Math.floor(Math.random() * emoticons.length)];
+            document.getElementById("space").innerHTML =
+              "U R IN " +
+              connection.sessionid +
+              "      " +
+              emoticons[Math.floor(Math.random() * emoticons.length)] +
+              emoticons[Math.floor(Math.random() * emoticons.length)];
           } else {
             disableInputButtons(true);
             if (error === "Room not available") {
@@ -82,33 +138,32 @@
           roomid,
           error
         ) {
+          var username = document.getElementById("name");
+          document.getElementById("open-room").style.display = "none";
+          document.getElementById("join-room").style.display = "none";
+          document.getElementById("namefield").innerHTML =
+            "HELLO    " +
+            username.value +
+            "        " +
+            emoticons[Math.floor(Math.random() * emoticons.length)] +
+            emoticons[Math.floor(Math.random() * emoticons.length)] +
+            emoticons[Math.floor(Math.random() * emoticons.length)];
+          document.getElementById("space").innerHTML =
+            "U R IN " +
+            connection.sessionid +
+            "         " +
+            emoticons[Math.floor(Math.random() * emoticons.length)];
           if (error) {
             disableInputButtons(true);
             if (error === "Room not available") {
               alert(
-                "This room does not exist. Please either create it or wait for moderator to enter in the room."
+                "This room does not exist💻. Please either create it or wait for your friend to make it 🙌"
               );
               return;
             }
             alert(error);
           }
         });
-      };
-
-      document.getElementById("open-or-join-room").onclick = function() {
-        disableInputButtons();
-        connection.openOrJoin(
-          document.getElementById("room-id").value,
-          function(isRoomExist, roomid, error) {
-            if (error) {
-              disableInputButtons(true);
-              alert(error);
-            } else if (connection.isInitiator === true) {
-              // if room doesn't exist, it means that current user will create the room
-              showRoomURL(roomid);
-            }
-          }
-        );
       };
 
       // ......................................................
@@ -208,7 +263,6 @@
         return sdp;
       };
       // END_FIX_VIDEO_AUTO_PAUSE_ISSUES
-
       // https://www.rtcmulticonnection.org/docs/iceServers/
       // use your own TURN-server here!
       connection.iceServers = [
@@ -252,9 +306,10 @@
             video.setAttribute("muted", true);
           }
         }
-        video.srcObject = event.stream;
 
+        video.srcObject = event.stream;
         var width = parseInt(connection.videosContainer.clientWidth / 3) - 20;
+        // event.userid,
         var mediaElement = getHTMLMediaElement(video, {
           title: event.userid,
           buttons: ["full-screen"],
@@ -276,32 +331,6 @@
           connection.sessionid
         );
 
-        chkRecordConference.parentNode.style.display = "none";
-
-        if (chkRecordConference.checked === true) {
-          btnStopRecording.style.display = "inline-block";
-          recordingStatus.style.display = "inline-block";
-
-          var recorder = connection.recorder;
-          if (!recorder) {
-            recorder = RecordRTC([event.stream], {
-              type: "video"
-            });
-            recorder.startRecording();
-            connection.recorder = recorder;
-          } else {
-            recorder.getInternalRecorder().addStreams([event.stream]);
-          }
-
-          if (!connection.recorder.streams) {
-            connection.recorder.streams = [];
-          }
-
-          connection.recorder.streams.push(event.stream);
-          recordingStatus.innerHTML =
-            "Recording " + connection.recorder.streams.length + " streams";
-        }
-
         if (event.type === "local") {
           connection.socket.on("disconnect", function() {
             if (!connection.getAllParticipants().length) {
@@ -311,24 +340,24 @@
         }
       };
 
-      var recordingStatus = document.getElementById("recording-status");
-      var chkRecordConference = document.getElementById(
-        "record-entire-conference"
-      );
-      var btnStopRecording = document.getElementById("btn-stop-recording");
-      btnStopRecording.onclick = function() {
-        var recorder = connection.recorder;
-        if (!recorder) return alert("No recorder found.");
-        recorder.stopRecording(function() {
-          var blob = recorder.getBlob();
-          invokeSaveAsDialog(blob);
-
-          connection.recorder = null;
-          btnStopRecording.style.display = "none";
-          recordingStatus.style.display = "none";
-          chkRecordConference.parentNode.style.display = "inline-block";
-        });
-      };
+      // var recordingStatus = document.getElementById("recording-status");
+      // var chkRecordConference = document.getElementById(
+      //   "record-entire-conference"
+      // );
+      // var btnStopRecording = document.getElementById("btn-stop-recording");
+      // btnStopRecording.onclick = function() {
+      //   var recorder = connection.recorder;
+      //   if (!recorder) return alert("No recorder found.");
+      //   recorder.stopRecording(function() {
+      //     var blob = recorder.getBlob();
+      //     invokeSaveAsDialog(blob);
+      //
+      //     connection.recorder = null;
+      //     btnStopRecording.style.display = "none";
+      //     recordingStatus.style.display = "none";
+      //     chkRecordConference.parentNode.style.display = "inline-block";
+      //   });
+      // };
 
       connection.onstreamended = function(event) {
         var mediaElement = document.getElementById(event.streamid);
@@ -361,8 +390,6 @@
 
       function disableInputButtons(enable) {
         document.getElementById("room-id").onkeyup();
-
-        document.getElementById("open-or-join-room").disabled = !enable;
         document.getElementById("open-room").disabled = !enable;
         document.getElementById("join-room").disabled = !enable;
         document.getElementById("room-id").disabled = !enable;
@@ -442,18 +469,6 @@
         document.getElementById("room-id").value = roomid;
         localStorage.setItem(connection.socketMessageEvent, roomid);
 
-        // auto-join-room
-        (function reCheckRoomPresence() {
-          connection.checkPresence(roomid, function(isRoomExist) {
-            if (isRoomExist) {
-              connection.join(roomid);
-              return;
-            }
-
-            setTimeout(reCheckRoomPresence, 5000);
-          });
-        })();
-
         disableInputButtons();
       }
 
@@ -466,10 +481,6 @@
         alert("2G is not supported. Please use a better internet service.");
       }
     </script>
-
-    <footer>
-      <small id="send-message"></small>
-    </footer>
 
     <script src="https://www.webrtc-experiment.com/common.js"></script>
   </body>
