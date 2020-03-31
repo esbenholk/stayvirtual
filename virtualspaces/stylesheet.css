@@ -18,7 +18,7 @@ body {
 
 #car {
   position: relative;
-  height: 100px;
+  height: 300px;
   top: 50%;
   display: flex;
   flex-direction: row;
@@ -54,7 +54,7 @@ body {
   z-index: -999999;
 }
 video {
-  width: 67.5px;
+  width: 202px;
   border: 2px solid yellow;
   border-radius: 20%;
 }
