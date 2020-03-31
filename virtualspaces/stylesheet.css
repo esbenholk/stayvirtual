@@ -13,7 +13,6 @@ body {
   top: 0;
   left: 0;
   z-index: -99999999;
-  overflow-y: hidden;
 }
 
 #car {
@@ -37,11 +36,11 @@ body {
   background-image: url("carCenter.png");
 }
 .carFront {
-  width: 100%;
+  width: 50%;
   height: auto;
 }
 .carBack {
-  width: 100%;
+  width: 50%;
   height: auto;
 }
 .media-box {
@@ -52,7 +51,7 @@ body {
   z-index: -999999;
 }
 video {
-  width: 300px;
+  width: 100%;
   border: 2px solid yellow;
   border-radius: 20%;
 }
