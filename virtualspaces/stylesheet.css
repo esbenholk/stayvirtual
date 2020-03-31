@@ -13,7 +13,7 @@ body {
   top: 0;
   left: 0;
   z-index: -99999999;
-  padding-top: 50vh;
+  padding-top: 100vh;
   overflow-y: hidden;
 }
 
@@ -30,18 +30,17 @@ body {
   flex-wrap: nowrap;
 }
 .media-container {
-  height: 446px;
   width: auto;
   background-repeat: no-repeat;
   background-size: 100%;
   background-image: url("carCenter.png");
 }
 .carFront {
-  width: 150%;
+  width: 100%;
   height: auto;
 }
 .carBack {
-  width: 150%;
+  width: 100%;
   height: auto;
 }
 .media-box {
