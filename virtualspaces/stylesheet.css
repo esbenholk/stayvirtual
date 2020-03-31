@@ -107,7 +107,12 @@ button:hover {
   font-size: 5vw;
   font-weight: 700;
 }
-
+#room-urls {
+  display: none;
+}
+h2 {
+  visibility: hidden;
+}
 .typewriter-text {
   width: auto;
   display: inline-block;
